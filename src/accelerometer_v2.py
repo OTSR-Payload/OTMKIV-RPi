@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import smbus2
 import time
 import struct
@@ -13,6 +11,7 @@ BW_RATE = 0x2C
 DATAX0 = 0x32
 
 bus = smbus2.SMBus(1)
+
 
 def initialize():
     # 100 Hz output data rate
@@ -28,7 +27,7 @@ def initialize():
 def read_xyz():
     data = bus.read_i2c_block_data(DEVICE, DATAX0, 6)
 
-    x, y, z = struct.unpack('<hhh', bytes(data))
+    x, y, z = struct.unpack("<hhh", bytes(data))
 
     # Full resolution scale factor
     scale = 0.0039
@@ -48,9 +47,7 @@ try:
     while True:
         x, y, z = read_xyz()
 
-        print(f"X = {x:7.3f} g   "
-              f"Y = {y:7.3f} g   "
-              f"Z = {z:7.3f} g")
+        print(f"X = {x:7.3f} g   Y = {y:7.3f} g   Z = {z:7.3f} g")
 
         time.sleep(0.1)
 
